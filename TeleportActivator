@@ -1,0 +1,30 @@
+using UdonSharp;
+using UnityEngine;
+using VRC.SDKBase;
+using VRC.Udon;
+
+// 特定のオブジェクト（targetObject）がトリガーに入ったときに、テレポーター（teleporter）を出現させるスクリプト
+public class U_TeleportActivatorTarget : UdonSharpBehaviour
+{
+    // 出現させたいオブジェクト（例：テレポーター）
+    [SerializeField]
+    private GameObject teleporter;
+
+    // 接触を検出したい対象のオブジェクト（これと一致する場合のみ反応する）
+    [SerializeField]
+    private GameObject targetObject;
+
+    // トリガーに何かが入ったときに呼ばれる処理
+    private void OnTriggerEnter(Collider other)
+    {
+        // 接触したオブジェクトが指定されたターゲットと一致するかチェック
+        if (other.gameObject == targetObject)
+        {
+            // テレポーターが設定されていれば、それを表示（アクティブに）する
+            if (teleporter != null)
+            {
+                teleporter.SetActive(true);
+            }
+        }
+    }
+}

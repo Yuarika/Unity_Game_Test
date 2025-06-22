@@ -3,27 +3,37 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon;
 
-// 特定のオブジェクト（targetObject）がトリガーに入ったときに、テレポーター（teleporter）を出現させるスクリプト
+// 指定のオブジェクトがトリガーに入ったとき、テレポーターを出現させ、効果音を鳴らすスクリプト
 public class U_TeleportActivatorTarget : UdonSharpBehaviour
 {
-    // 出現させたいオブジェクト（例：テレポーター）
+    // 出現させたいテレポーター
     [SerializeField]
     private GameObject teleporter;
 
-    // 接触を検出したい対象のオブジェクト（これと一致する場合のみ反応する）
+    // 対象となるオブジェクト（これがトリガーに入った時に反応）
     [SerializeField]
     private GameObject targetObject;
 
-    // トリガーに何かが入ったときに呼ばれる処理
+    // 効果音を再生する AudioSource（トリガーに入った瞬間に鳴る）
+    [SerializeField]
+    private AudioSource soundEffectSource;
+
+    // トリガーに何かが入ったときに呼ばれる
     private void OnTriggerEnter(Collider other)
     {
-        // 接触したオブジェクトが指定されたターゲットと一致するかチェック
+        // 接触したオブジェクトが、設定したターゲットと一致するか確認
         if (other.gameObject == targetObject)
         {
-            // テレポーターが設定されていれば、それを表示（アクティブに）する
+            // テレポーターを表示（アクティブにする）
             if (teleporter != null)
             {
                 teleporter.SetActive(true);
+            }
+
+            // 効果音を鳴らす（AudioSource が設定されている場合）
+            if (soundEffectSource != null)
+            {
+                soundEffectSource.Play();
             }
         }
     }
